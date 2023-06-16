@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{%static 'css/colorization.css'%}"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <img
+      src="{% static 'img/wallpaperflare.com_wallpaper.jpg'%}"
+      style="
+        z-index: -1;
+        width: 100%;
+        height: 100%;
+        object-fit: fill;
+        position: absolute;
+      "
+    />
+    <section id="first_section">
+      <div class="title_container" style="text-align: center">
+        <h1 class="title">Coloru</h1>
+        <p>color your life</p>
+      </div>
+    </section>
+    <main>
+      <div class="form_container">
+        <form id="colorization_form">
+          {% csrf_token %}
+          <input type="file" name="media_file" />
+          <button type="reset">reset</button>
+          <button type="submit">Generate</button>
+        </form>
+      </div>
+      <div class="response_container">
+        <h1 class="title"></h1>
+        <div class="process_container">
+          <h2>file before</h2>
+          <div class="media_container" id="media_file_container"></div>
+        </div>
+        <div class="process_container">
+          <h2>file after</h2>
+          <div
+            class="media_container"
+            id="processed_media_file_container"
+          ></div>
+        </div>
+      </div>
+    </main>
+    <script>
+      $(document).ready(function () {
+        $("#colorization_form").submit(function (event) {
+          // inputfield
+          event.preventDefault(); // prevent the form from submitting normally
+
+          const fileInput = $('[name="media_file"]');
+          // alert(fileInput.val());
+          // const fileInput = $("#file-input");
+          const previewContainer = $("#media_file_container");
+          // Reset the preview container
+          previewContainer.empty();
+
+          const file = fileInput[0].files[0];
+          const reader = new FileReader();
+
+          reader.onload = function () {
+            if (file.type.includes("image")) {
+              // Display the image preview
+              const imagePreview = $("<img>").attr("src", reader.result);
+              previewContainer.html(imagePreview);
+            } else if (file.type.includes("video")) {
+              // Display the video preview
+              const videoPreview = $("<video>").attr({
+                src: reader.result,
+                controls: true,
+              });
+              previewContainer.html(videoPreview);
+            } else {
+              // Unsupported file type
+              previewContainer.html("Unsupported file type.");
+            }
+          };
+
+          reader.readAsDataURL(file);
+
+          var formData = new FormData($(this)[0]); // create a FormData object
+          console.log(formData);
+          //   alert(JSON.stringify(formData));
+          $.ajax({
+            url: "/process_form/",
+            type: "POST",
+            data: formData,
+            contentType: false, // tell jQuery not to set the content type
+            processData: false, // tell jQuery not to process the data
+            success: function (response) {
+              console.log(response);
+              //   $("#response-container").html('<img src="' + response + '" />');
+              let responseContainer = $("#response_container");
+              let processedMediaContainer = $(
+                "#processed_media_file_container"
+              );
+              // Reset the response container
+              processedMediaContainer.empty();
+              // var urlObject = window.URL.createObjectURL(response);
+              // console.log(urlObject)
+              // var contentType = response.type.split("/")[0];
+              if (response.file_type === "image") {
+                $("#title").text(response.message);
+                // responseContainer.prepend(message);
+                var image = $("<img>").attr("src", response.file);
+                console.log(image);
+                var download_btn = $("<a>")
+                  .attr("href", response.file)
+                  .attr("download", "true")
+                  .append(
+                    $("<button>").attr("id", "download_btn").html("Download")
+                  );
+
+                processedMediaContainer.append(image).append(download_btn);
+              } else if (response.file_type === "video") {
+                $("#title").text(response.message);
+                var video = $("<video>")
+                  .attr("src", response.file)
+                  .attr("controls", true);
+                var download_btn = $("<a>")
+                  .attr("href", response.file)
+                  .attr("download", "true")
+                  .append(
+                    $("<button>").attr("id", "download_btn").html("Download")
+                  );
+                processedMediaContainer.append(video).append(download_btn);
+              } else {
+                console.log("Unsupported file type:", response.file_type);
+              }
+            },
+            error: function (error) {
+              console.error(error.responseText);
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

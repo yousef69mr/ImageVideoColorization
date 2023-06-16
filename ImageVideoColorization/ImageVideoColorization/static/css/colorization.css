@@ -1,0 +1,152 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #9dd8f2;
+  font-family: Arial, sans-serif;
+}
+
+.form_container {
+  margin: 20px;
+  padding: 20px;
+  background-color: #e8ebec70;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #4d25a9d6;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 36px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+button:hover {
+  background-color: #3200a6d6;
+}
+
+button:active {
+  transform: scale(0.9);
+}
+
+#first_section {
+  width: 100%;
+}
+
+.title_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-direction: column;
+  min-height: 200px;
+  height: auto;
+}
+.title_container .title {
+  font-size: 84pt;
+  color: #fff;
+}
+
+.title_container p {
+  font-size: 40pt;
+  color: #fff;
+}
+/* .response_container {
+  width: 100%;
+  padding: 10px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 5px;
+}
+
+.process_container {
+  /* flex-grow: 1;
+  flex-shrink: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+}
+.media_container{
+  width: 100%;
+}*/
+
+img {
+  width: 100%;
+  object-fit: fill;
+  border-radius: 8px;
+}
+
+.response_container {
+  margin-top: 30px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.response_container h1 {
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.process_container {
+  margin: 20px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  /* border: solid black 1px; */
+  justify-content: center;
+  align-self: center;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 50px;
+  height: 100%;
+}
+
+.process_container h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.media_container {
+  max-width: 100%;
+  height: auto;
+  margin: auto;
+  border-radius: 8px;
+}
+
+@media screen and (min-width: 960px) {
+  .response_container {
+    margin-top: 50px;
+  }
+
+  .process_container {
+    margin: 40px 20px;
+    width: 45%;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .response_container {
+    margin-top: 50px;
+  }
+
+  .process_container {
+    margin: 40px 20px;
+    /* width: 10%; */
+  }
+}
